@@ -89,9 +89,19 @@ A API vai estar em `http://localhost:3000`.
 2. No [Render](https://render.com), clique em **New +** → **Blueprint** e
    aponte para o repositório (o arquivo `render.yaml` já está configurado),
    **ou** crie manualmente um **Web Service** com:
-   - **Build Command:** `npm install && npm run build && npm run db:migrate`
+   - **Build Command:** `npm ci --include=dev && npm run build && npm run db:migrate`
    - **Start Command:** `npm start`
    - **Health Check Path:** `/health`
+
+   > Por que `npm ci` (e não `npm install`)? Ele instala exatamente as
+   > versões travadas no `package-lock.json` (que já está commitado no
+   > projeto), evitando que o build resolva uma versão mais nova e
+   > incompatível de alguma dependência (foi exatamente isso que quebrou o
+   > build na primeira tentativa: o `typescript` foi resolvido para uma
+   > major mais nova que removeu opções do `tsconfig.json`). O
+   > `--include=dev` garante que `typescript`, `drizzle-kit` e `tsx`
+   > (devDependencies, necessários só no build) sejam instalados mesmo com
+   > `NODE_ENV=production` definido.
 3. Em **Environment**, adicione a variável `DATABASE_URL` com a connection
    string do Neon (a mesma do passo anterior — use uma branch/db de produção
    separada da de desenvolvimento, se preferir).
