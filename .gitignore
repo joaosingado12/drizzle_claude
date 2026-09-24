@@ -3,4 +3,7 @@ dist
 .env
 *.log
 .DS_Store
-drizzle/meta
+
+# IMPORTANTE: a pasta ./drizzle (migrations + drizzle/meta) NÃO deve ser
+# ignorada — ela precisa ser commitada, pois é o histórico de migrations
+# que o comando `drizzle-kit migrate` usa para saber o que já foi aplicado.
